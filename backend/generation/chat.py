@@ -1,14 +1,23 @@
-import ollama
-from backend.core.config import CHAT_MODEL
+from collections.abc import Iterator
 
-def chat(message: str, history: list):
+from backend.core.config import CHAT_MODEL
+from backend.models.ollama_provider import provider
+
+
+def chat_events(
+    message: str,
+    history: list[dict],
+    inference: dict | None = None,
+) -> Iterator[dict]:
 
     messages = [
         {
             "role": "system",
             "content": (
-                "You are Atlas, a helpful AI assistant. "
-                "Respond naturally and concisely."
+                "You are Atlas, a capable personal research assistant. "
+                "Answer directly and naturally. "
+                "Be concise by default, but give detail when the user asks for it. "
+                "Do not repeat yourself or add unnecessary conclusions."
             )
         }
     ]
@@ -20,9 +29,20 @@ def chat(message: str, history: list):
         "content": message
     })
 
-    response = ollama.chat(
-        model=CHAT_MODEL,
-        messages=messages
-    )
+    yield from provider.stream(messages, inference or provider.resolve(CHAT_MODEL))
 
-    return response["message"]["content"]
+
+def chat_stream(message: str, history: list[dict], inference: dict | None = None) -> Iterator[str]:
+    for event in chat_events(message, history, inference):
+        if event["type"] == "token":
+            yield event["content"]
+
+
+def chat(
+    message: str,
+    history: list[dict]
+) -> str:
+
+    return "".join(
+        chat_stream(message, history)
+    )

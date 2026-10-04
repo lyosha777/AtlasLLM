@@ -1,38 +1,39 @@
-import chromadb
-from sentence_transformers import SentenceTransformer
-from backend.core.config import EMBEDDING_MODEL
-
-embedding_model = SentenceTransformer(EMBEDDING_MODEL)
-
-client = chromadb.PersistentClient(path="./data/chroma")
-
-collection = client.get_collection(
-    name="atlas_documents"
-)
+from backend.core.document_store import get_document_collection, get_embedding_model
+from backend.core.source import Source
 
 
-def retrieve(query: str, n_results: int = 5):
+def retrieve(
+    query: str,
+    n_results: int = 5,
+    document_ids: list[str] | None = None,
+) -> list[Source]:
+    collection = get_document_collection()
+    count = collection.count()
+    if not count or n_results < 1 or document_ids == []:
+        return []
 
-    query_embedding = embedding_model.encode(query).tolist()
-
+    options = {}
+    if document_ids:
+        options["where"] = {"document_id": {"$in": document_ids}}
+    query_embedding = get_embedding_model().encode(query).tolist()
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=n_results,
-        include=["documents", "metadatas", "distances"]
+        n_results=min(n_results, count),
+        include=["documents", "metadatas", "distances"],
+        **options,
     )
-
-    retrieved_chunks = []
-
-    for document, metadata, distance in zip(
-        results["documents"][0],
-        results["metadatas"][0],
-        results["distances"][0]
-    ):
-        retrieved_chunks.append({
-            "text": document,
-            "source": metadata["source"],
-            "page": metadata["page"],
-            "distance": distance
-        })
-
-    return retrieved_chunks
+    return [
+        Source(
+            text=document,
+            source_type="document",
+            title=metadata["source"],
+            page=metadata["page"],
+            relevance_score=1 / (1 + distance),
+            document_id=metadata.get("document_id"),
+        )
+        for document, metadata, distance in zip(
+            results["documents"][0],
+            results["metadatas"][0],
+            results["distances"][0],
+        )
+    ]
