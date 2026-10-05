@@ -1,6 +1,7 @@
 from collections.abc import Iterator
 from datetime import datetime, timezone
 import os
+import time
 
 import httpx
 import ollama
@@ -126,6 +127,7 @@ class OllamaProvider:
         detected = ReasoningCapability(**capability)
         mode, settings = detected.resolve(reasoning)
         return {"provider": self.name, "model": descriptor["name"], "model_digest": descriptor["digest"],
+                "context_length": descriptor["context_length"],
                 "requested_reasoning": reasoning, "reasoning_mode": mode, "capability": capability,
                 "settings": settings, "actual_settings": None,
                 "detected_at": datetime.now(timezone.utc).isoformat()}
@@ -135,19 +137,45 @@ class OllamaProvider:
         return {"model": inference["model"], **inference["settings"],
                 "options": {"temperature": 0 if research else 0.3, "num_predict": 600}}
 
-    def stream(self, messages, inference, research=False) -> Iterator[dict]:
+    def stream(self, messages, inference, research=False, schema=None, output_tokens=None, context_tokens=None,
+               telemetry=None) -> Iterator[dict]:
         current = self.inspect(inference["model"])
         if current["digest"] != inference["model_digest"] or current["reasoning"] != inference["capability"]:
             raise InferenceError("Model capabilities changed after submission. Submit a new request.")
         settings = self.inference_settings(inference, research)
+        if schema is not None:
+            settings["format"] = schema
+        if output_tokens is not None:
+            settings["options"]["num_predict"] = output_tokens
+        if context_tokens is not None:
+            limit = current.get("context_length")
+            settings["options"]["num_ctx"] = min(context_tokens, limit) if isinstance(limit, int) else context_tokens
+            # A conservative text bound prevents silent evidence truncation by Ollama.
+            input_bound = sum(len(item["content"]) for item in messages) // 2 + 256
+            if input_bound + (output_tokens or 600) > settings["options"]["num_ctx"]:
+                raise InferenceError("Research artifacts exceed this model's context budget. Use a model with a larger context window.")
         yield {"type": "inference", "settings": settings}
         answer_filter = AnswerFilter()
         visible = False
         thinking = False
         stream = None
+        inference_start = time.perf_counter()
+        first_visible = None
+        measured_usage = {}
         try:
+            if telemetry:
+                telemetry({"type": "inference_started", "at": time.perf_counter()})
             stream = ollama.chat(messages=messages, stream=True, **settings)
             for chunk in stream:
+                observed_at = time.perf_counter()
+                if chunk.get("done"):
+                    measured_usage = {key: chunk[key] for key in ("eval_count", "eval_duration")
+                                      if isinstance(chunk.get(key), (int, float)) and not isinstance(chunk.get(key), bool) and chunk[key] >= 0}
+                if telemetry and chunk.get("done"):
+                    usage = {key: chunk[key] for key in ("eval_count", "eval_duration", "prompt_eval_count",
+                             "prompt_eval_duration", "load_duration", "total_duration")
+                             if isinstance(chunk.get(key), (int, float)) and not isinstance(chunk.get(key), bool) and chunk[key] >= 0}
+                    telemetry({"type": "usage", "at": observed_at, **usage})
                 message = chunk.get("message", {})
                 if message.get("thinking"):
                     if not thinking and not visible:
@@ -155,6 +183,10 @@ class OllamaProvider:
                         yield {"type": "status", "stage": "reasoning", "label": "Thinking"}
                 content = answer_filter.feed(message.get("content") or "")
                 if content:
+                    if first_visible is None:
+                        first_visible = observed_at
+                    if telemetry:
+                        telemetry({"type": "visible_chunk", "at": observed_at})
                     if not visible:
                         visible = True
                         yield {"type": "status", "stage": "generating", "label": "Writing"}
@@ -164,6 +196,12 @@ class OllamaProvider:
             answer_filter.feed("", final=True)
             if not visible:
                 raise InferenceError("The model produced no final answer. Its response budget may have been exhausted; try another model.")
+            if schema is None:
+                metrics = {"inference_ttft": first_visible - inference_start}
+                count, duration = measured_usage.get("eval_count"), measured_usage.get("eval_duration")
+                if count and duration:
+                    metrics.update(tps=count / (duration / 1e9), tpot=duration / 1e9 / count)
+                yield {"type": "performance", "timings": metrics}
         except InferenceError:
             raise
         except Exception as error:

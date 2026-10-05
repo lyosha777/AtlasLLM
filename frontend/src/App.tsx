@@ -26,6 +26,14 @@ import {
   X,
 } from "lucide-react";
 
+import { ResearchControls } from "./ResearchControls";
+import { DictationControl } from "./DictationControl";
+import { SettingsPanel } from "./SettingsPanel";
+import { defaultPreferences, loadPreferences, savePreferences } from "./preferences";
+import { useResponseSpeech, SpeechButton, PerformanceDetails } from "./ResponseDetails";
+import { ResearchPanel } from "./ResearchPanel";
+import { researchCitations } from "./researchCitations";
+import type { ResearchScope } from "./api";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -87,19 +95,6 @@ function makeTitle(text: string) {
 }
 
 
-function loadTheme(): Theme {
-  const stored = localStorage.getItem("atlas.theme");
-
-  if (stored === "light" || stored === "dark") {
-    return stored;
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
-
-
 function formatGroup(dateString: string) {
   const date = new Date(dateString);
   const today = new Date();
@@ -147,7 +142,10 @@ function sourceLabel(source: Source) {
 
 
 function App() {
-  const [theme, setTheme] = useState<Theme>(loadTheme);
+  const [preferences, setPreferences] = useState(loadPreferences);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [theme, setTheme] = useState<Theme>(() => preferences.appearance === "system"
+    ? window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light" : preferences.appearance);
 
   const [chats, setChats] = useState<Chat[]>([]);
 
@@ -159,6 +157,7 @@ function App() {
   const [modelSelection, setModelSelection] = useState(loadModelSelection);
   const selectedModel = resolveSelection(models.catalog, modelSelection);
   const messages = activeChatId ? generations.messages[activeChatId] ?? EMPTY_MESSAGES : EMPTY_MESSAGES;
+  const speech = useResponseSpeech(activeChatId);
   const activeJob = activeChatId ? generations.jobs[activeChatId] : undefined;
   const generating = isActiveGeneration(activeJob);
 
@@ -167,6 +166,9 @@ function App() {
 
   const [input, setInput] = useState("");
   const [forceWeb, setForceWeb] = useState(false);
+  const [researchMode, setResearchMode] = useState(preferences.research);
+  const [researchScope, setResearchScope] = useState<ResearchScope>("auto");
+  const [inspectedEvidence, setInspectedEvidence] = useState<{ runId: string; id: string } | null>(null);
   const [files, setFiles] = useState<ComposerFile[]>([]);
   const [submissions, setSubmissions] = useState<Set<string>>(new Set());
   const [draftId, setDraftId] = useState(makeLocalId);
@@ -192,6 +194,7 @@ function App() {
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [focusComposer] = useState(() => () => textareaRef.current?.focus());
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const composerRef = useRef<HTMLDivElement | null>(null);
   const uploadControllers = useRef(new Map<string, AbortController>());
@@ -258,8 +261,16 @@ function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem("atlas.theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    savePreferences(preferences);
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => setTheme(preferences.appearance === "system" ? media.matches ? "dark" : "light" : preferences.appearance);
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, [preferences]);
 
   useEffect(() => {
     localStorage.setItem("atlas.modelSelection", JSON.stringify(modelSelection));
@@ -365,6 +376,8 @@ function App() {
 
 
   function startNewChat() {
+    setResearchMode(preferences.research);
+    setResearchScope("auto");
 
     viewVersion.current += 1;
     setDraftId(makeLocalId());
@@ -571,6 +584,8 @@ function App() {
     const selectedFiles = files;
     const documentIds = selectedFiles.flatMap((file) => file.document ? [file.document.id] : []);
     const useWeb = forceWeb;
+    const submittedResearch = researchMode;
+    const submittedScope = researchScope;
     const requestId = makeLocalId();
     const submittedModel = selectedModel.name;
     const submittedReasoning = modelSelection.reasoning;
@@ -586,7 +601,7 @@ function App() {
         if (version === viewVersion.current) setActiveChatId(chat.id);
       }
       const job = await submitGeneration(chatId, text, { forceWeb: useWeb, documentIds, requestId,
-        model: submittedModel, reasoning: submittedReasoning });
+        model: submittedModel, reasoning: submittedReasoning, researchMode: submittedResearch, researchScope: submittedScope });
       generations.store.applyJob(job);
       if (version === viewVersion.current) {
         setForceWeb(false);
@@ -633,6 +648,10 @@ function App() {
 
   return (
     <div className="app-shell">
+      {settingsOpen && <SettingsPanel preferences={preferences} onChange={setPreferences} onClose={() => setSettingsOpen(false)}
+        reset={() => { setPreferences({ ...defaultPreferences }); setModelSelection({ model: null, reasoning: null }); }}
+        modelControls={{ catalog: models.catalog, selection: modelSelection, onChange: setModelSelection,
+          loading: models.loading, error: models.error, refresh: models.refresh, disabled: false }} />}
       <aside className="sidebar">
         <div className="brand-row">
           <div className="brand">
@@ -642,11 +661,7 @@ function App() {
           <button
             className="icon-button"
             onClick={() =>
-              setTheme((current) =>
-                current === "light"
-                  ? "dark"
-                  : "light",
-              )
+              setPreferences((current) => ({ ...current, appearance: theme === "light" ? "dark" : "light" }))
             }
             title="Toggle appearance"
           >
@@ -859,7 +874,7 @@ function App() {
           )}
         </div>
 
-        <button className="settings-button">
+        <button className="settings-button" onClick={() => setSettingsOpen(true)}>
           <Settings size={17} />
           Settings
         </button>
@@ -968,7 +983,15 @@ function App() {
                           <ReactMarkdown
                             remarkPlugins={[
                               remarkGfm,
+                              ...(message.research_run_id ? [researchCitations(message.sources.map((source) => source.index))] : []),
                             ]}
+                            components={{ a: ({ href, children, ...props }) => {
+                              const match = href?.match(/^#atlas-evidence-(\d+)$/);
+                              const source = match && message.sources.find((item) => item.index === Number(match[1]));
+                              if (source && source.evidence_id && message.research_run_id) return <button className="citation-button"
+                                onClick={() => setInspectedEvidence({ runId: message.research_run_id!, id: source.evidence_id! })}>{children}</button>;
+                              return <a href={href} {...props}>{children}</a>;
+                            } }}
                           >
                             {message.content}
                           </ReactMarkdown>
@@ -982,6 +1005,9 @@ function App() {
                         </div>
                       )}
 
+                      {message.research_run_id && <ResearchPanel runId={message.research_run_id} revision={message.research_revision ?? 0}
+                        inspectId={inspectedEvidence?.runId === message.research_run_id ? inspectedEvidence.id : undefined}
+                        onCloseInspector={() => setInspectedEvidence(null)} />}
                       {message.sources.length >
                         0 && (
                         <Sources
@@ -995,6 +1021,7 @@ function App() {
                         "assistant" &&
                         message.content && (
                           <div className="message-actions">
+                            <SpeechButton id={message.id} text={message.content} speech={speech} />
                             <button
                               onClick={() =>
                                 void copyMessage(
@@ -1020,6 +1047,7 @@ function App() {
                             </button>
                           </div>
                         )}
+                      {message.role === "assistant" && <PerformanceDetails key={`${message.id}-${preferences.performanceOpen}`} timings={message.timings} defaultOpen={preferences.performanceOpen} />}
                       {message.role === "assistant" && message.content && generating &&
                         index === messages.length - 1 && activity && (
                           <div className="writing-activity" role="status">{activity}</div>
@@ -1030,6 +1058,7 @@ function App() {
               )}
 
               <div ref={bottomRef} />
+              {speech.state.error && <p className="research-note" role="status">{speech.state.error}</p>}
             </section>
           )}
         </div>
@@ -1148,6 +1177,7 @@ function App() {
 
                 <div className="composer-footer">
                   <div className="composer-left">
+                    <DictationControl chatId={activeChatId} disabled={submitting} append={setInput} focus={focusComposer} />
                     <span className="tool-control">
                       <button aria-label="Add files" aria-describedby="attachment-tooltip"
                         disabled={submitting} onClick={() => fileInputRef.current?.click()}>
@@ -1158,7 +1188,7 @@ function App() {
                     <span className="tool-control">
                       <button aria-label="Search the web" aria-describedby="web-tooltip"
                         aria-pressed={forceWeb} className={forceWeb ? "tool-active" : ""}
-                        disabled={submitting} onClick={() => setForceWeb((current) => !current)}>
+                        disabled={submitting || researchMode} onClick={() => setForceWeb((current) => !current)}>
                         <Globe2 size={17} />
                       </button>
                       <span className="tool-tooltip" id="web-tooltip" role="tooltip">Search the web</span>
@@ -1166,6 +1196,8 @@ function App() {
                     {forceWeb && <span className="web-mode-label">WEB · NEXT MESSAGE</span>}
                   </div>
 
+                  <ResearchControls enabled={researchMode} scope={researchScope} disabled={submitting}
+                    onChange={(enabled, scope) => { setResearchMode(enabled); setResearchScope(scope); if (enabled) setForceWeb(false); }} />
                   <ModelControls catalog={models.catalog} selection={modelSelection} onChange={setModelSelection}
                     loading={models.loading} error={models.error} refresh={models.refresh} disabled={submitting} />
 

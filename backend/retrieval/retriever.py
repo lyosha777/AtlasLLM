@@ -30,10 +30,12 @@ def retrieve(
             page=metadata["page"],
             relevance_score=1 / (1 + distance),
             document_id=metadata.get("document_id"),
+            chunk_id=chunk_id, retrieval_score=1 / (1 + distance),
         )
-        for document, metadata, distance in zip(
+        for document, metadata, distance, chunk_id in zip(
             results["documents"][0],
             results["metadatas"][0],
             results["distances"][0],
+            results.get("ids", [[None] * len(results["documents"][0])])[0],
         )
     ]

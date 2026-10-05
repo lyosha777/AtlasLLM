@@ -1,6 +1,17 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import trafilatura
+from lxml import html
+
+
+def publication_date(downloaded):
+    try:
+        page = html.fromstring(downloaded)
+        values = page.xpath("//meta[@property='article:published_time' or @name='datePublished' "
+                            "or @itemprop='datePublished']/@content | //time[@itemprop='datePublished']/@datetime")
+        return values[0].strip() if values and values[0].strip() else None
+    except (ValueError, TypeError):
+        return None
 
 
 def read_webpage(url: str) -> dict | None:
@@ -25,6 +36,7 @@ def read_webpage(url: str) -> dict | None:
         return {
             "url": url,
             "text": text.strip(),
+            "publication_date": publication_date(downloaded),
         }
 
     except Exception:

@@ -14,7 +14,8 @@ def get_reranker():
 def rerank(
     query: str,
     sources: list[Source],
-    top_k: int = 6
+    top_k: int = 6,
+    diversify: bool = True,
 ) -> list[Source]:
 
     if not sources:
@@ -36,7 +37,7 @@ def rerank(
         reverse=True
     )
 
-    return diversify_sources(ranked, top_k)
+    return diversify_sources(ranked, top_k) if diversify else ranked[:top_k]
 
 
 def diversify_sources(

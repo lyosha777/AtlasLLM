@@ -11,6 +11,7 @@ import ollama
 
 from backend import db
 from backend.tests.smoke_local import local_client
+from backend.tests.integration_timeout import run_with_deadline
 
 
 def main():
@@ -76,4 +77,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_with_deadline(main, 300)

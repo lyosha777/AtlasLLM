@@ -2,6 +2,8 @@ import json
 from uuid import uuid4
 
 from backend import db
+from backend.research import store as research_store
+from backend.research.schemas import budgets
 
 
 ACTIVE = ("queued", "running", "cancelling")
@@ -9,10 +11,11 @@ TERMINAL = ("completed", "cancelled", "error", "interrupted")
 EVENT_FIELDS = {
     "job": (), "acknowledged": (), "status": ("stage", "label"),
     "plan": ("documents", "web", "fresh"), "token": ("content",), "sources": ("sources",),
-    "inference": ("settings",), "done": ("timings",), "error": ("message",),
+    "inference": ("settings",), "performance": ("timings",), "done": ("timings",), "error": ("message",),
     "cancelled": (), "interrupted": ("message",), "cancelling": (),
 }
 
+EVENT_FIELDS.update(research_store.EVENTS)
 
 class JobConflict(ValueError):
     pass
@@ -36,8 +39,11 @@ def _snapshot(connection, job_id):
         job[f"{role}_message"] = db.serialize_message(message)
     job["assistant_message"].update({
         "generation_id": job_id, "generation_status": row["status"], "generation_revision": row["last_event_id"],
-        "inference": job["inference"],
+        "inference": job["inference"], "timings": job["timings"],
     })
+    job["research"] = research_store.summary(connection, job_id)
+    if job["research"]:
+        job["assistant_message"].update(research_run_id=job["research"]["id"], research_revision=job["research"]["revision"])
     return job
 
 
@@ -58,11 +64,12 @@ def _event(connection, job_id, event):
     return snapshot
 
 
-def validate_retry(original, chat_id, message, force_web, document_ids, model, reasoning):
+def validate_retry(original, chat_id, message, force_web, document_ids, model, reasoning, research_mode=False, research_scope="auto"):
     if original["chat_id"] != chat_id:
         raise JobConflict("Request ID belongs to another chat.")
     request = json.loads(original["request_json"])
-    if (request["message"] != message or request["force_web"] != force_web
+    if (request.get("research_mode", False) != research_mode or request.get("research_scope", "auto") != research_scope
+            or request["message"] != message or request["force_web"] != force_web
             or (request["document_ids"] or []) != (document_ids or [])
             or request.get("selection", {"model": None, "reasoning": None}) != {"model": model, "reasoning": reasoning}):
         raise JobConflict("Request ID already used for a different message or model settings.")
@@ -81,13 +88,13 @@ def replay_request(request_id, **selection):
 
 
 def create_job(chat_id: str, message: str, force_web=False, document_ids=None, request_id=None,
-               inference=None, model=None, reasoning=None):
+               inference=None, model=None, reasoning=None, research_mode=False, research_scope="auto"):
     request_id = request_id or str(uuid4())
     with db.connection() as connection:
         connection.execute("BEGIN IMMEDIATE")
         existing = connection.execute("SELECT * FROM generation_jobs WHERE request_id = ?", (request_id,)).fetchone()
         if existing:
-            validate_retry(existing, chat_id, message, force_web, document_ids, model, reasoning)
+            validate_retry(existing, chat_id, message, force_web, document_ids, model, reasoning, research_mode, research_scope)
             return _snapshot(connection, existing["id"]), False
         chat = connection.execute("SELECT * FROM chats WHERE id = ?", (chat_id,)).fetchone()
         if chat is None:
@@ -118,6 +125,10 @@ def create_job(chat_id: str, message: str, force_web=False, document_ids=None, r
                 (message_id, chat_id, role, content, json.dumps(files), timestamp),
             )
         request = {"message": message, "history": history, "force_web": force_web, "document_ids": document_ids or None}
+        if research_scope != "auto":
+            request["research_scope"] = research_scope
+        if research_mode:
+            request.update(research_mode=True, research_scope=research_scope, research_run_id=str(uuid4()))
         request["selection"] = {"model": model, "reasoning": reasoning}
         if inference is not None:
             request["inference"] = inference
@@ -126,6 +137,9 @@ def create_job(chat_id: str, message: str, force_web=False, document_ids=None, r
             "status, activity, request_json, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 'queued', 'Queued', ?, ?, ?)",
             (job_id, request_id, chat_id, user_id, assistant_id, json.dumps(request), timestamp, timestamp),
         )
+        if research_mode:
+            connection.execute("INSERT INTO research_runs (id, job_id, scope, budgets_json, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
+                               (request["research_run_id"], job_id, research_scope, json.dumps(budgets()), timestamp, timestamp))
         connection.execute("UPDATE chats SET updated_at = ? WHERE id = ?", (timestamp, chat_id))
         connection.execute("UPDATE generation_jobs SET inference_json = ? WHERE id = ?",
                            (json.dumps(inference) if inference is not None else None, job_id))
@@ -186,7 +200,10 @@ def update(job_id, event):
             return None
         timestamp = db.now()
         status, activity, error = row["status"], row["activity"], row["error"]
-        if kind == "status":
+        if kind in research_store.EVENTS:
+            research_store.apply(connection, job_id, event)
+            status, activity = "running", kind.replace("_", " ").capitalize()
+        elif kind == "status":
             status, activity = "running", event["label"]
         elif kind == "token":
             connection.execute("UPDATE messages SET content = content || ? WHERE id = ?",
@@ -201,14 +218,17 @@ def update(job_id, event):
                 inference["actual_settings"] = event["settings"]
                 connection.execute("UPDATE generation_jobs SET inference_json = ? WHERE id = ?",
                                    (json.dumps(inference), job_id))
-        elif kind == "done":
-            status, activity = "completed", None
+        elif kind in ("done", "performance"):
+            if kind == "done":
+                status, activity = "completed", None
             connection.execute("UPDATE generation_jobs SET timings_json = ? WHERE id = ?",
-                               (json.dumps(event.get("timings", {})), job_id))
+                               (json.dumps({**json.loads(row["timings_json"]), **event.get("timings", {})}), job_id))
         elif kind in ("cancelled", "interrupted", "error"):
             status, activity, error = kind, None, event.get("message")
         elif kind == "cancelling":
             status, activity = "cancelling", "Stopping"
+        if status in TERMINAL:
+            research_store.finish(connection, job_id, status, error)
         connection.execute(
             "UPDATE generation_jobs SET status = ?, activity = ?, error = ?, updated_at = ? WHERE id = ?",
             (status, activity, error, timestamp, job_id),

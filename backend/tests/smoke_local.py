@@ -14,6 +14,7 @@ import uvicorn
 from backend import api, db
 from backend.core import document_store
 from backend.tests.test_research import pdf_bytes
+from backend.tests.integration_timeout import run_with_deadline
 
 
 @contextmanager
@@ -100,4 +101,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_with_deadline(main, 300)

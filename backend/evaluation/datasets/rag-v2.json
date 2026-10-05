@@ -1,0 +1,938 @@
+{
+  "version": "rag-v2",
+  "description": "Controlled local corpus with original 25 cases plus 20 challenging cases and 20 near-topic distractor pages. All gold passages remain answerable. Synthetic policies and studies are fictional.",
+  "passages": [
+    {
+      "id": "network:page:1:chunk:0",
+      "document_id": "network",
+      "page": 1,
+      "text": "TCP establishes a connection with a three-way handshake: SYN, SYN-ACK, then ACK. This exchange synchronizes sequence numbers before application data is transmitted."
+    },
+    {
+      "id": "network:page:2:chunk:0",
+      "document_id": "network",
+      "page": 2,
+      "text": "UDP sends independent datagrams without establishing a connection. It does not guarantee delivery, ordering, or retransmission. Applications must implement reliability themselves when needed."
+    },
+    {
+      "id": "network:page:3:chunk:0",
+      "document_id": "network",
+      "page": 3,
+      "text": "DNS maps domain names to addresses. An A record stores an IPv4 address; an AAAA record stores an IPv6 address. A CNAME record aliases one hostname to another."
+    },
+    {
+      "id": "network:page:4:chunk:0",
+      "document_id": "network",
+      "page": 4,
+      "text": "A TLS certificate binds a public key to a server identity. Clients validate the certificate chain, hostname, and expiry date before trusting the server. Encryption alone does not establish server identity."
+    },
+    {
+      "id": "network:page:5:chunk:0",
+      "document_id": "network",
+      "page": 5,
+      "text": "HTTP status 429 means Too Many Requests. The Retry-After header can tell a client how long to wait before retrying. Exponential backoff reduces repeated pressure on a rate-limited service."
+    },
+    {
+      "id": "storage:page:1:chunk:0",
+      "document_id": "storage",
+      "page": 1,
+      "text": "A SQLite WAL database writes changes to a write-ahead log. Readers can continue using their existing snapshot while a writer commits. SQLite still permits only one writer at a time."
+    },
+    {
+      "id": "storage:page:2:chunk:0",
+      "document_id": "storage",
+      "page": 2,
+      "text": "Foreign keys preserve referential integrity. ON DELETE CASCADE removes child records when their parent is deleted. SQLite applications must enable PRAGMA foreign_keys on each database connection."
+    },
+    {
+      "id": "storage:page:3:chunk:0",
+      "document_id": "storage",
+      "page": 3,
+      "text": "A composite B-tree index on (tenant_id, created_at) supports equality filtering by tenant followed by a time range. Its leading column matters; queries filtering only created_at may not benefit equally."
+    },
+    {
+      "id": "storage:page:4:chunk:0",
+      "document_id": "storage",
+      "page": 4,
+      "text": "An atomic transaction groups related updates. Either all changes commit or none do. If a transfer debits one account but fails to credit another, rolling back the transaction prevents a partial transfer."
+    },
+    {
+      "id": "storage:page:5:chunk:0",
+      "document_id": "storage",
+      "page": 5,
+      "text": "Database backups must be restorable, not merely copied. The handbook requires a monthly restore drill into an isolated database and verification of row counts and integrity before declaring a backup healthy."
+    },
+    {
+      "id": "retrieval:page:1:chunk:0",
+      "document_id": "retrieval",
+      "page": 1,
+      "text": "Dense retrieval embeds queries and passages into a shared vector space. Similarity can retrieve paraphrases even when query and passage share few words. Embedding relevance does not guarantee factual support."
+    },
+    {
+      "id": "retrieval:page:2:chunk:0",
+      "document_id": "retrieval",
+      "page": 2,
+      "text": "A cross-encoder reranker jointly processes a query and a candidate passage to produce a relevance score. It reorders retrieved candidates but cannot recover a relevant passage absent from the candidate pool."
+    },
+    {
+      "id": "retrieval:page:3:chunk:0",
+      "document_id": "retrieval",
+      "page": 3,
+      "text": "Recall at K is the fraction of gold relevant passages present in the top K retrieved results. With two relevant passages and one found in the top three, Recall at 3 is one half."
+    },
+    {
+      "id": "retrieval:page:4:chunk:0",
+      "document_id": "retrieval",
+      "page": 4,
+      "text": "Mean reciprocal rank averages the inverse rank of the first relevant result across queries. A query whose first relevant result is third contributes one third; a query with no relevant result contributes zero."
+    },
+    {
+      "id": "retrieval:page:5:chunk:0",
+      "document_id": "retrieval",
+      "page": 5,
+      "text": "Citation provenance retains a stable source identifier, exact retrieved passage, document identifier, and page number. A valid source identifier alone does not establish that the passage supports the answer's claim."
+    },
+    {
+      "id": "operations:page:1:chunk:0",
+      "document_id": "operations",
+      "page": 1,
+      "text": "A readiness probe indicates whether a service can accept traffic. A liveness probe checks whether the process should be restarted. A dependency outage may make a service unready without requiring its process to restart."
+    },
+    {
+      "id": "operations:page:2:chunk:0",
+      "document_id": "operations",
+      "page": 2,
+      "text": "Graceful shutdown stops accepting new work, allows active requests a bounded drain period, and then closes resources. A cancellation signal is different from a client disconnect when background work must continue."
+    },
+    {
+      "id": "operations:page:3:chunk:0",
+      "document_id": "operations",
+      "page": 3,
+      "text": "Idempotency keys identify repeated submissions of the same operation. The server stores the key with the operation result and returns the existing result on retry rather than creating a duplicate job."
+    },
+    {
+      "id": "operations:page:4:chunk:0",
+      "document_id": "operations",
+      "page": 4,
+      "text": "Server-sent events carry server updates over an HTTP connection. Event IDs and Last-Event-ID allow a reconnecting subscriber to replay missed events when the server retains an event log."
+    },
+    {
+      "id": "operations:page:5:chunk:0",
+      "document_id": "operations",
+      "page": 5,
+      "text": "Latency percentiles describe a distribution. The p50 is the median request latency; p95 captures slower requests near the tail. Averages alone can conceal poor latency experienced by a minority of users."
+    },
+    {
+      "id": "lab:page:1:chunk:0",
+      "document_id": "lab",
+      "page": 1,
+      "text": "Project Kestrel samples river water every Tuesday at 08:00. Samples must reach the laboratory within six hours and remain chilled at four degrees Celsius during transport."
+    },
+    {
+      "id": "lab:page:2:chunk:0",
+      "document_id": "lab",
+      "page": 2,
+      "text": "The Cedar instrument requires calibration with buffer solutions at pH 4 and pH 7 before each measurement session. Replace the electrode if calibration drift exceeds 0.2 pH units."
+    },
+    {
+      "id": "lab:page:3:chunk:0",
+      "document_id": "lab",
+      "page": 3,
+      "text": "In the controlled germination trial, seeds in tray Amber receive twelve hours of light daily. Tray Slate receives eight hours. Both trays use the same soil and receive twenty milliliters of water each day."
+    },
+    {
+      "id": "lab:page:4:chunk:0",
+      "document_id": "lab",
+      "page": 4,
+      "text": "The specimen archive stores frozen tissue at minus eighty degrees Celsius. Access requires a recorded specimen identifier and operator initials. Thawed specimens must not be returned to the primary archive."
+    },
+    {
+      "id": "lab:page:5:chunk:0",
+      "document_id": "lab",
+      "page": 5,
+      "text": "For the fictional Harbor study, the control group receives saline and the treatment group receives compound H17. Allocation is randomized, and outcome assessors remain blinded to group assignment."
+    },
+    {
+      "id": "challenge-recovery-policy:page:1:chunk:0",
+      "document_id": "challenge-recovery-policy",
+      "page": 1,
+      "text": "The recovery handbook distinguishes service objectives from backup schedules. Teams document dependencies, assign an incident lead, and rehearse restoration quarterly. A restored service must pass integrity checks before traffic returns. For the payments service, the recovery time objective is forty minutes; the recovery point objective permits at most five minutes of lost transactions. Hourly snapshots supplement continuous journal shipping. The incident clock starts when customer transactions fail, not when the on-call engineer acknowledges the page. Review exceptions with the risk owner."
+    },
+    {
+      "id": "challenge-recovery-policy-related:page:1:chunk:0",
+      "document_id": "challenge-recovery-policy-related",
+      "page": 1,
+      "text": "The payments recovery time objective is forty minutes. Engineers measure downtime from the first failed customer transaction. Incident acknowledgement time is reported separately. Recovery rehearsals verify that service can resume within the downtime objective."
+    },
+    {
+      "id": "challenge-restore-policy:page:1:chunk:0",
+      "document_id": "challenge-restore-policy",
+      "page": 1,
+      "text": "A restore verification reads a copied database into an isolated environment and checks constraints and representative records. Replication health only demonstrates that a secondary is receiving changes; it does not prove that a historical backup can be restored after accidental deletion. The monthly restore drill uses a dated backup, not the live replica."
+    },
+    {
+      "id": "challenge-restore-policy-related:page:1:chunk:0",
+      "document_id": "challenge-restore-policy-related",
+      "page": 1,
+      "text": "Replication monitoring compares log positions between primary and secondary databases. A replica with low lag can take over after hardware failure. Automatic failover reduces service downtime when the primary becomes unavailable."
+    },
+    {
+      "id": "challenge-queue-delivery:page:1:chunk:0",
+      "document_id": "challenge-queue-delivery",
+      "page": 1,
+      "text": "At-least-once delivery acknowledges queue messages only after work completes. If the worker crashes after performing a side effect but before acknowledgement, the broker may redeliver the message. Consumers must deduplicate effects using a stable operation identifier. Broker durability alone does not make side effects exactly once."
+    },
+    {
+      "id": "challenge-queue-delivery-related:page:1:chunk:0",
+      "document_id": "challenge-queue-delivery-related",
+      "page": 1,
+      "text": "At-most-once delivery acknowledges messages before processing. A crash after acknowledgement can lose the work. This mode minimizes redelivery but provides no guarantee that every submitted job will complete."
+    },
+    {
+      "id": "challenge-idempotency-api:page:1:chunk:0",
+      "document_id": "challenge-idempotency-api",
+      "page": 1,
+      "text": "The order API accepts an idempotency key with each create request. A retry with the same key and identical payload returns the saved response. Reusing that key with a changed quantity or shipping address returns HTTP 409 rather than updating the original order. Keys expire after twenty-four hours; clients must not treat them as permanent order identifiers."
+    },
+    {
+      "id": "challenge-idempotency-api-related:page:1:chunk:0",
+      "document_id": "challenge-idempotency-api-related",
+      "page": 1,
+      "text": "An order can be updated through PATCH using its permanent order identifier. Changing the shipping address is allowed before dispatch. The update endpoint records a revision and returns the latest order representation."
+    },
+    {
+      "id": "challenge-jwt-security:page:1:chunk:0",
+      "document_id": "challenge-jwt-security",
+      "page": 1,
+      "text": "A JSON Web Token is a signed set of claims. A JWT signature prevents unnoticed alteration but does not hide the payload. Ordinary signed tokens are readable by anyone who obtains them. Confidential claims require encryption or server-side storage. Verification must also check issuer, audience, and expiry."
+    },
+    {
+      "id": "challenge-jwt-security-related:page:1:chunk:0",
+      "document_id": "challenge-jwt-security-related",
+      "page": 1,
+      "text": "Transport Layer Security encrypts traffic between endpoints. HTTPS protects authorization headers while they cross the network. TLS certificates authenticate the server when the client correctly validates the chain and hostname."
+    },
+    {
+      "id": "challenge-cache-consistency:page:1:chunk:0",
+      "document_id": "challenge-cache-consistency",
+      "page": 1,
+      "text": "In cache-aside reads, the application checks its cache before loading the database. After a database update it invalidates the cached value. A racing reader can read the old database value before the update and populate the cache after invalidation, leaving a stale entry. Versioned writes or bounded expiry can address this race."
+    },
+    {
+      "id": "challenge-cache-consistency-related:page:1:chunk:0",
+      "document_id": "challenge-cache-consistency-related",
+      "page": 1,
+      "text": "Write-through caching updates the cache as part of the write path. Readers can avoid database access while entries remain cached. Expiry controls memory use and determines when unchanged entries need refreshing."
+    },
+    {
+      "id": "challenge-vector-distance:page:1:chunk:0",
+      "document_id": "challenge-vector-distance",
+      "page": 1,
+      "text": "Cosine similarity compares vector directions independently of magnitude. For unit-normalized embeddings, ranking by squared Euclidean distance gives the same order as ranking by cosine similarity. Without normalization that equivalence need not hold, because vector length affects Euclidean distance."
+    },
+    {
+      "id": "challenge-vector-distance-related:page:1:chunk:0",
+      "document_id": "challenge-vector-distance-related",
+      "page": 1,
+      "text": "Dot product similarity combines vector direction and length. Large-norm vectors may receive higher dot products even without better angular alignment. Cosine normalization removes this magnitude effect."
+    },
+    {
+      "id": "challenge-search-metrics:page:1:chunk:0",
+      "document_id": "challenge-search-metrics",
+      "page": 1,
+      "text": "Mean reciprocal rank, abbreviated MRR, measures the position of the first relevant result. Normalized discounted cumulative gain, abbreviated NDCG, can account for multiple relevant results with graded relevance and discounts lower positions. NDCG is appropriate when highly relevant evidence should count more than merely related material."
+    },
+    {
+      "id": "challenge-search-metrics-related:page:1:chunk:0",
+      "document_id": "challenge-search-metrics-related",
+      "page": 1,
+      "text": "Recall at K measures how many known relevant results are retrieved within a cutoff. Precision at K measures the relevant fraction among returned results. Binary relevance labels do not distinguish strong support from partial topical relevance."
+    },
+    {
+      "id": "challenge-research-evidence:page:1:chunk:0",
+      "document_id": "challenge-research-evidence",
+      "page": 1,
+      "text": "An evidence passage may discuss the correct subject without supporting a specific assertion. The reviewer distinguishes topical relevance from entailment: a page naming a treatment is not evidence that the treatment improved survival. Supported claims need a passage reporting the corresponding outcome or a justified relationship."
+    },
+    {
+      "id": "challenge-research-evidence-related:page:1:chunk:0",
+      "document_id": "challenge-research-evidence-related",
+      "page": 1,
+      "text": "A cross-encoder assigns a query-passage relevance score. Reranking moves highly relevant candidates earlier in the source list. Good relevance scores can make a document easier to discover for subsequent review."
+    },
+    {
+      "id": "challenge-sse-replay:page:1:chunk:0",
+      "document_id": "challenge-sse-replay",
+      "page": 1,
+      "text": "The event service retains updates for thirty minutes. A subscriber reconnects with Last-Event-ID. If the cursor predates retention, the server returns a snapshot-required event rather than silently starting at the newest update. The client fetches the authoritative job snapshot and then resumes from its supplied cursor."
+    },
+    {
+      "id": "challenge-sse-replay-related:page:1:chunk:0",
+      "document_id": "challenge-sse-replay-related",
+      "page": 1,
+      "text": "SSE clients reconnect after a dropped HTTP connection and can supply Last-Event-ID. A retry field sets the delay before reconnection. Heartbeats keep intermediary connections active when no application updates are available."
+    },
+    {
+      "id": "challenge-tls-renewal:page:1:chunk:0",
+      "document_id": "challenge-tls-renewal",
+      "page": 1,
+      "text": "Certificates are renewed before expiry, but clients still reject a renewed certificate whose subject does not match the requested hostname. A valid signature chain and future expiry date cannot compensate for a hostname mismatch. Renewals must include the correct subject alternative names."
+    },
+    {
+      "id": "challenge-tls-renewal-related:page:1:chunk:0",
+      "document_id": "challenge-tls-renewal-related",
+      "page": 1,
+      "text": "Expired certificates fail client validation even when issued by a trusted authority. Automated renewal schedules request replacement certificates before the old expiry date. Monitoring alerts operators when renewal has not completed."
+    },
+    {
+      "id": "challenge-dns-negative-cache:page:1:chunk:0",
+      "document_id": "challenge-dns-negative-cache",
+      "page": 1,
+      "text": "DNS negative caching retains the result that a requested name does not exist. Publishing a new record does not immediately remove cached NXDOMAIN responses. A resolver may continue returning the negative result until its negative-cache lifetime expires, even though authoritative servers already contain the new record."
+    },
+    {
+      "id": "challenge-dns-negative-cache-related:page:1:chunk:0",
+      "document_id": "challenge-dns-negative-cache-related",
+      "page": 1,
+      "text": "Positive DNS caching retains existing address records for their TTL. Changing an A record may leave clients using the previous address until the positive entry expires. Shorter TTLs can reduce the transition period."
+    },
+    {
+      "id": "challenge-sqlite-checkpoint:page:1:chunk:0",
+      "document_id": "challenge-sqlite-checkpoint",
+      "page": 1,
+      "text": "A long-running SQLite WAL reader keeps a snapshot of older pages. Checkpointing cannot finish reclaiming all WAL frames while that reader needs them. Repeated writes can therefore grow the WAL even when checkpoints run. Closing the old read transaction allows a later checkpoint to advance."
+    },
+    {
+      "id": "challenge-sqlite-checkpoint-related:page:1:chunk:0",
+      "document_id": "challenge-sqlite-checkpoint-related",
+      "page": 1,
+      "text": "SQLite permits only one writer at a time. A second writer may receive a busy error or wait for the configured busy timeout. Short write transactions reduce writer contention under load."
+    },
+    {
+      "id": "challenge-cancellation-policy:page:1:chunk:0",
+      "document_id": "challenge-cancellation-policy",
+      "page": 1,
+      "text": "The report service owns work in durable per-job records. Closing a subscriber connection removes only that subscription. Explicit cancellation changes the job state and signals its worker. Navigating away or losing connectivity must not be treated as a cancellation request."
+    },
+    {
+      "id": "challenge-cancellation-policy-related:page:1:chunk:0",
+      "document_id": "challenge-cancellation-policy-related",
+      "page": 1,
+      "text": "Interactive request handlers may abandon expensive work when their client connection closes. Cancellation in a request-scoped handler can avoid wasting CPU on an answer no subscriber will receive."
+    },
+    {
+      "id": "challenge-lab-coldchain:page:1:chunk:0",
+      "document_id": "challenge-lab-coldchain",
+      "page": 1,
+      "text": "The Kestrel team separates water chemistry samples from bacterial culture samples. Chemistry bottles travel chilled at four degrees Celsius and arrive within six hours. Culture bottles use insulated ambient-temperature transport and arrive within two hours. Never freeze either type. Each bottle label records collection time and assay type; receiving staff reject unlabeled bottles."
+    },
+    {
+      "id": "challenge-lab-coldchain-related:page:1:chunk:0",
+      "document_id": "challenge-lab-coldchain-related",
+      "page": 1,
+      "text": "Kestrel chemistry samples are collected on Tuesdays at 08:00. They travel at four degrees Celsius and reach the laboratory within six hours. The laboratory logs the temperature of the cooler on arrival."
+    },
+    {
+      "id": "challenge-lab-buffer:page:1:chunk:0",
+      "document_id": "challenge-lab-buffer",
+      "page": 1,
+      "text": "Cedar and Birch are different instruments with separate calibration procedures. Cedar uses pH 4 and pH 7 buffers. Birch uses pH 7 and pH 10 buffers because it measures alkaline solutions. Both electrodes are replaced if drift exceeds 0.2 pH units. Instrument names must be recorded with calibration results."
+    },
+    {
+      "id": "challenge-lab-buffer-related:page:1:chunk:0",
+      "document_id": "challenge-lab-buffer-related",
+      "page": 1,
+      "text": "Cedar calibration uses pH 4 and pH 7 buffers before each session. Replace the Cedar electrode if drift exceeds 0.2 pH units. Record buffer batch numbers and the operator initials."
+    },
+    {
+      "id": "challenge-lab-trial:page:1:chunk:0",
+      "document_id": "challenge-lab-trial",
+      "page": 1,
+      "text": "In a second germination study, tray Amber receives eight hours of light and tray Slate receives twelve. This reverses the earlier controlled trial. Water and soil remain unchanged. The second study tests whether the previous difference follows the illumination period rather than an intrinsic difference between the labeled trays."
+    },
+    {
+      "id": "challenge-lab-trial-related:page:1:chunk:0",
+      "document_id": "challenge-lab-trial-related",
+      "page": 1,
+      "text": "In the first germination trial, tray Amber receives twelve hours of light and Slate receives eight. Both trays use the same soil and twenty milliliters of water per day."
+    },
+    {
+      "id": "challenge-lab-archive:page:1:chunk:0",
+      "document_id": "challenge-lab-archive",
+      "page": 1,
+      "text": "The tissue archive contains a primary frozen collection and a separate working collection. Primary samples remain at minus eighty degrees Celsius and cannot be returned after thawing. Working aliquots may be returned once if their thaw interval is under ten minutes and the operator records the cycle. These working aliquots must never be merged into primary stocks."
+    },
+    {
+      "id": "challenge-lab-archive-related:page:1:chunk:0",
+      "document_id": "challenge-lab-archive-related",
+      "page": 1,
+      "text": "Primary frozen tissue is stored at minus eighty degrees Celsius. Thawed primary specimens must not be returned. Access logs require the specimen identifier and operator initials."
+    },
+    {
+      "id": "challenge-pca-statistics:page:1:chunk:0",
+      "document_id": "challenge-pca-statistics",
+      "page": 1,
+      "text": "Principal component analysis, or PCA, finds orthogonal directions of maximum variance in numerical data. It is an unsupervised dimensionality reduction method and does not use class labels. A direction with high variance need not separate the classes most effectively."
+    },
+    {
+      "id": "challenge-pca-statistics-related:page:1:chunk:0",
+      "document_id": "challenge-pca-statistics-related",
+      "page": 1,
+      "text": "Linear discriminant analysis uses class labels to seek directions that separate groups relative to within-group variation. LDA can therefore favor a direction that has less overall variance than a principal component."
+    },
+    {
+      "id": "challenge-pca-care:page:1:chunk:0",
+      "document_id": "challenge-pca-care",
+      "page": 1,
+      "text": "In the clinical pain protocol, PCA means patient-controlled analgesia. The pump lets a patient request a dose but enforces a lockout interval before another dose can be delivered. Requests during lockout are recorded without delivering more medicine. This use of PCA has no relation to principal component analysis."
+    },
+    {
+      "id": "challenge-pca-care-related:page:1:chunk:0",
+      "document_id": "challenge-pca-care-related",
+      "page": 1,
+      "text": "Principal component analysis, abbreviated PCA, projects data into a lower-dimensional space. Choosing the number of components balances retained variance and model simplicity. PCA is often used before clustering."
+    }
+  ],
+  "cases": [
+    {
+      "id": "q01",
+      "style": "direct",
+      "question": "What are the three messages in the TCP handshake?",
+      "expected_document_ids": [
+        "network"
+      ],
+      "expected_chunk_ids": [
+        "network:page:1:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q02",
+      "style": "paraphrase",
+      "question": "Which transport sends messages without setting up a connection or promising they arrive?",
+      "expected_document_ids": [
+        "network"
+      ],
+      "expected_chunk_ids": [
+        "network:page:2:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q03",
+      "style": "terminology",
+      "question": "Which DNS resource record resolves a hostname to an IPv6 address?",
+      "expected_document_ids": [
+        "network"
+      ],
+      "expected_chunk_ids": [
+        "network:page:3:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q04",
+      "style": "different_wording",
+      "question": "How does a browser verify that an encrypted peer is the intended website?",
+      "expected_document_ids": [
+        "network"
+      ],
+      "expected_chunk_ids": [
+        "network:page:4:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q05",
+      "style": "specific_passage",
+      "question": "What header tells a client when to retry after an HTTP 429 response?",
+      "expected_document_ids": [
+        "network"
+      ],
+      "expected_chunk_ids": [
+        "network:page:5:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q06",
+      "style": "terminology",
+      "question": "Does SQLite WAL mode allow multiple simultaneous writers?",
+      "expected_document_ids": [
+        "storage"
+      ],
+      "expected_chunk_ids": [
+        "storage:page:1:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q07",
+      "style": "specific_passage",
+      "question": "Which per-connection SQLite setting enables cascading foreign key enforcement?",
+      "expected_document_ids": [
+        "storage"
+      ],
+      "expected_chunk_ids": [
+        "storage:page:2:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q08",
+      "style": "different_wording",
+      "question": "Why might a time-only filter miss the benefit of an index that starts with a customer identifier?",
+      "expected_document_ids": [
+        "storage"
+      ],
+      "expected_chunk_ids": [
+        "storage:page:3:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q09",
+      "style": "paraphrase",
+      "question": "How can a money transfer avoid leaving only the debit applied if the credit fails?",
+      "expected_document_ids": [
+        "storage"
+      ],
+      "expected_chunk_ids": [
+        "storage:page:4:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q10",
+      "style": "direct",
+      "question": "How often does the handbook require testing database restoration?",
+      "expected_document_ids": [
+        "storage"
+      ],
+      "expected_chunk_ids": [
+        "storage:page:5:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q11",
+      "style": "paraphrase",
+      "question": "How can a search find a passage expressed using different words?",
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "expected_chunk_ids": [
+        "retrieval:page:1:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q12",
+      "style": "terminology",
+      "question": "Can cross-encoder reranking recover a passage missing from first-stage retrieval?",
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "expected_chunk_ids": [
+        "retrieval:page:2:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q13",
+      "style": "specific_passage",
+      "question": "What is Recall@3 when one of two gold passages is returned?",
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "expected_chunk_ids": [
+        "retrieval:page:3:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q14",
+      "style": "direct",
+      "question": "What does a first relevant result at rank three contribute to MRR?",
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "expected_chunk_ids": [
+        "retrieval:page:4:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q15",
+      "style": "different_wording",
+      "question": "What information lets a reader inspect the original snippet behind an answer reference?",
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "expected_chunk_ids": [
+        "retrieval:page:5:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q16",
+      "style": "terminology",
+      "question": "What distinguishes a readiness probe from a liveness probe during a dependency outage?",
+      "expected_document_ids": [
+        "operations"
+      ],
+      "expected_chunk_ids": [
+        "operations:page:1:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q17",
+      "style": "paraphrase",
+      "question": "How should a service exit while allowing ongoing requests time to finish?",
+      "expected_document_ids": [
+        "operations"
+      ],
+      "expected_chunk_ids": [
+        "operations:page:2:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q18",
+      "style": "different_wording",
+      "question": "How can retrying the same submission avoid launching a second task?",
+      "expected_document_ids": [
+        "operations"
+      ],
+      "expected_chunk_ids": [
+        "operations:page:3:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q19",
+      "style": "specific_passage",
+      "question": "How does an SSE subscriber request missed updates after reconnecting?",
+      "expected_document_ids": [
+        "operations"
+      ],
+      "expected_chunk_ids": [
+        "operations:page:4:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q20",
+      "style": "direct",
+      "question": "Why report p95 latency instead of only average latency?",
+      "expected_document_ids": [
+        "operations"
+      ],
+      "expected_chunk_ids": [
+        "operations:page:5:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q21",
+      "style": "specific_passage",
+      "question": "At what temperature and within how many hours must Kestrel water samples reach the lab?",
+      "expected_document_ids": [
+        "lab"
+      ],
+      "expected_chunk_ids": [
+        "lab:page:1:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q22",
+      "style": "terminology",
+      "question": "What pH buffers calibrate Cedar and what drift triggers electrode replacement?",
+      "expected_document_ids": [
+        "lab"
+      ],
+      "expected_chunk_ids": [
+        "lab:page:2:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q23",
+      "style": "different_wording",
+      "question": "Which seed tray gets a longer daily illumination period?",
+      "expected_document_ids": [
+        "lab"
+      ],
+      "expected_chunk_ids": [
+        "lab:page:3:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q24",
+      "style": "paraphrase",
+      "question": "May tissue that has warmed up be put back into the main frozen collection?",
+      "expected_document_ids": [
+        "lab"
+      ],
+      "expected_chunk_ids": [
+        "lab:page:4:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q25",
+      "style": "direct",
+      "question": "What does the Harbor study control group receive?",
+      "expected_document_ids": [
+        "lab"
+      ],
+      "expected_chunk_ids": [
+        "lab:page:5:chunk:0"
+      ],
+      "cohort": "original"
+    },
+    {
+      "id": "q26",
+      "style": "specific_passage",
+      "cohort": "challenge",
+      "question": "After payments fail, how much missing transaction history is acceptable, rather than how long restoration may take?",
+      "expected_document_ids": [
+        "challenge-recovery-policy"
+      ],
+      "expected_chunk_ids": [
+        "challenge-recovery-policy:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q27",
+      "style": "paraphrase",
+      "cohort": "challenge",
+      "question": "Why is a healthy secondary insufficient proof that an old saved database can be brought back after someone erases records?",
+      "expected_document_ids": [
+        "challenge-restore-policy"
+      ],
+      "expected_chunk_ids": [
+        "challenge-restore-policy:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q28",
+      "style": "terminology",
+      "cohort": "challenge",
+      "question": "Why can an at-least-once consumer charge a card twice even when the message broker loses nothing?",
+      "expected_document_ids": [
+        "challenge-queue-delivery"
+      ],
+      "expected_chunk_ids": [
+        "challenge-queue-delivery:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q29",
+      "style": "specific_passage",
+      "cohort": "challenge",
+      "question": "What happens if a retry keeps its operation key but changes the shipping address?",
+      "expected_document_ids": [
+        "challenge-idempotency-api"
+      ],
+      "expected_chunk_ids": [
+        "challenge-idempotency-api:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q30",
+      "style": "acronym",
+      "cohort": "challenge",
+      "question": "Does signing a JWT keep its claims secret from whoever holds it?",
+      "expected_document_ids": [
+        "challenge-jwt-security"
+      ],
+      "expected_chunk_ids": [
+        "challenge-jwt-security:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q31",
+      "style": "conceptual",
+      "cohort": "challenge",
+      "question": "How can an old value reappear in memory even though the writer removed it after updating the database?",
+      "expected_document_ids": [
+        "challenge-cache-consistency"
+      ],
+      "expected_chunk_ids": [
+        "challenge-cache-consistency:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q32",
+      "style": "terminology",
+      "cohort": "challenge",
+      "question": "When do L2 and cosine produce identical nearest-neighbor orderings?",
+      "expected_document_ids": [
+        "challenge-vector-distance"
+      ],
+      "expected_chunk_ids": [
+        "challenge-vector-distance:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q33",
+      "style": "acronym",
+      "cohort": "challenge",
+      "question": "Which ranking measure distinguishes strongly useful evidence from merely related results at several ranks, unlike MRR?",
+      "expected_document_ids": [
+        "challenge-search-metrics"
+      ],
+      "expected_chunk_ids": [
+        "challenge-search-metrics:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q34",
+      "style": "conceptual",
+      "cohort": "challenge",
+      "question": "Why is a page mentioning the right drug insufficient to substantiate a claim that patients lived longer?",
+      "expected_document_ids": [
+        "challenge-research-evidence"
+      ],
+      "expected_chunk_ids": [
+        "challenge-research-evidence:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q35",
+      "style": "specific_passage",
+      "cohort": "challenge",
+      "question": "How does a reconnecting subscriber recover when its last seen update has already expired from the event log?",
+      "expected_document_ids": [
+        "challenge-sse-replay"
+      ],
+      "expected_chunk_ids": [
+        "challenge-sse-replay:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q36",
+      "style": "specific_passage",
+      "cohort": "challenge",
+      "question": "Why could a newly renewed, trusted certificate still fail validation when visiting a particular host?",
+      "expected_document_ids": [
+        "challenge-tls-renewal"
+      ],
+      "expected_chunk_ids": [
+        "challenge-tls-renewal:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q37",
+      "style": "terminology",
+      "cohort": "challenge",
+      "question": "Why might a resolver still report NXDOMAIN after the new host record is published?",
+      "expected_document_ids": [
+        "challenge-dns-negative-cache"
+      ],
+      "expected_chunk_ids": [
+        "challenge-dns-negative-cache:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q38",
+      "style": "terminology",
+      "cohort": "challenge",
+      "question": "Why can the write-ahead file keep growing despite checkpoints when an old SELECT transaction stays open?",
+      "expected_document_ids": [
+        "challenge-sqlite-checkpoint"
+      ],
+      "expected_chunk_ids": [
+        "challenge-sqlite-checkpoint:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q39",
+      "style": "conceptual",
+      "cohort": "challenge",
+      "question": "Which action ends durable report work: losing the viewing connection or explicitly asking the worker to stop?",
+      "expected_document_ids": [
+        "challenge-cancellation-policy"
+      ],
+      "expected_chunk_ids": [
+        "challenge-cancellation-policy:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q40",
+      "style": "specific_passage",
+      "cohort": "challenge",
+      "question": "For Kestrel bacterial cultures, what arrival deadline applies rather than the chemistry-sample deadline?",
+      "expected_document_ids": [
+        "challenge-lab-coldchain"
+      ],
+      "expected_chunk_ids": [
+        "challenge-lab-coldchain:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q41",
+      "style": "specific_passage",
+      "cohort": "challenge",
+      "question": "Which two reference solutions are required for Birch, not Cedar?",
+      "expected_document_ids": [
+        "challenge-lab-buffer"
+      ],
+      "expected_chunk_ids": [
+        "challenge-lab-buffer:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q42",
+      "style": "different_wording",
+      "cohort": "challenge",
+      "question": "In the follow-up seed experiment, which tray spends less of the day illuminated?",
+      "expected_document_ids": [
+        "challenge-lab-trial"
+      ],
+      "expected_chunk_ids": [
+        "challenge-lab-trial:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q43",
+      "style": "specific_passage",
+      "cohort": "challenge",
+      "question": "Under what condition may a thawed working aliquot be returned, despite the primary archive prohibition?",
+      "expected_document_ids": [
+        "challenge-lab-archive"
+      ],
+      "expected_chunk_ids": [
+        "challenge-lab-archive:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q44",
+      "style": "acronym",
+      "cohort": "challenge",
+      "question": "Why can PCA keep a high-variance direction that is poor at separating labeled categories?",
+      "expected_document_ids": [
+        "challenge-pca-statistics"
+      ],
+      "expected_chunk_ids": [
+        "challenge-pca-statistics:page:1:chunk:0"
+      ]
+    },
+    {
+      "id": "q45",
+      "style": "ambiguity",
+      "cohort": "challenge",
+      "question": "In the pain ward, why does a second PCA button press sometimes deliver no additional medication?",
+      "expected_document_ids": [
+        "challenge-pca-care"
+      ],
+      "expected_chunk_ids": [
+        "challenge-pca-care:page:1:chunk:0"
+      ]
+    }
+  ]
+}

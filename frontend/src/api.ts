@@ -15,6 +15,9 @@ export type Source = {
   page: number | null;
   score: number | null;
   document_id?: string | null;
+  evidence_id?: string;
+  research_run_id?: string;
+  chunk_id?: string;
 };
 
 export type Message = {
@@ -29,6 +32,9 @@ export type Message = {
   generation_status?: GenerationStatus | null;
   generation_revision?: number;
   inference?: InferenceMetadata | null;
+  research_run_id?: string | null;
+  research_revision?: number;
+  timings?: Record<string, number>;
 };
 
 export type Chat = {
@@ -166,11 +172,12 @@ async function jobResponse(response: Response): Promise<GenerationJob> {
 
 export async function submitGeneration(
   chatId: string, message: string,
-  options: { forceWeb: boolean; documentIds: string[]; requestId: string; model?: string; reasoning?: string | null },
+  options: { forceWeb: boolean; documentIds: string[]; requestId: string; model?: string; reasoning?: string | null; researchMode?: boolean; researchScope?: ResearchScope },
 ): Promise<GenerationJob> {
   return jobResponse(await fetch(`${API}/chats/${chatId}/generations`, {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message, force_web: options.forceWeb, document_ids: options.documentIds,
+      ...(options.researchMode ? { research_mode: true, research_scope: options.researchScope ?? "auto" } : {}),
       request_id: options.requestId, ...(options.model ? { model: options.model, reasoning: options.reasoning ?? null } : {}) }),
   }));
 }
@@ -385,4 +392,36 @@ export function uploadDocument(
     body.append("file", file);
     request.send(body);
   });
+}
+
+
+export type ResearchScope = "auto" | "web" | "documents" | "both";
+export type ResearchEvidence = {
+  id: string; run_id: string; subquestion_id: string; subquestion_ids: string[];
+  source_type: string; title: string | null; url: string | null; document_id: string | null;
+  page: number | null; chunk_id: string; passage: string; query: string; publication_date: string | null;
+  retrieved_at: string; retrieval_score: number | null; reranker_score: number | null;
+  selected_for_synthesis: boolean; occurrences: { subquestion_id: string; query: string }[];
+  provenance?: { domain: string | null; retrieval: string; ranking: string };
+};
+export type ResearchRun = {
+  id: string; status: string; scope: ResearchScope; objective: string | null; revision: number; error: string | null;
+  metrics: { searches?: number; candidates?: number; evidence_selected?: number; urls_fetched?: number;
+    pages_fetched?: number; web_chunks_considered?: number; duplicates?: number; followup_searches?: number;
+    total_seconds?: number; stage_timings?: Record<string, number>; depth?: "quick" | "standard" | "deep";
+    initial_depth?: string; depth_reason?: string; escalated?: boolean;
+    escalations?: { from_depth: string; to_depth: string; reason: string }[] };
+  budgets: Record<string, number>;
+  subquestions: { id: string; question: string; reason: string; search_queries: string[] }[];
+  searches: { id: string; subquestion_id: string; query: string; source_type: string; status: string;
+    followup: boolean; candidates?: number; duration_seconds?: number; error?: string; fetch?: { failed: string[] } }[];
+  evidence: ResearchEvidence[];
+  analysis: { coverage: { subquestion_id: string; status: string; explanation: string }[];
+    claims: { id: string; statement: string; supporting_evidence_ids: string[]; conflicting_evidence_ids: string[];
+      supporting_origins: number; ambiguous_evidence_ids?: string[] }[] } | null;
+};
+export async function getResearchRun(runId: string, signal?: AbortSignal): Promise<ResearchRun> {
+  const response = await fetch(`${API}/research/${encodeURIComponent(runId)}`, { signal });
+  if (!response.ok) throw new Error(response.status === 404 ? "This research run is no longer available." : "Couldn't load research artifacts.");
+  return response.json();
 }

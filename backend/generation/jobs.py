@@ -38,6 +38,8 @@ class JobManager:
         stream = None
         pending = []
         last_flush = time.monotonic()
+        started = time.perf_counter()
+        first_token = None
 
         def flush():
             nonlocal last_flush
@@ -61,10 +63,16 @@ class JobManager:
                 if event["type"] == "checkpoint":
                     continue
                 if event["type"] == "token":
+                    if first_token is None and event["content"]:
+                        first_token = time.perf_counter()
                     pending.append(event["content"])
                     if time.monotonic() - last_flush >= 0.04:
                         flush()
                 else:
+                    if event["type"] == "done":
+                        event = {**event, "timings": {**event.get("timings", {}), "total": time.perf_counter() - started}}
+                        if first_token is not None:
+                            event["timings"]["ttft"] = first_token - started
                     flush()
                     result = store.update(job_id, event)
                     if result is None:

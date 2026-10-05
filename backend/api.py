@@ -4,6 +4,8 @@ import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 from uuid import uuid4
+from typing import Literal
+from backend.research.store import get_run
 
 from fastapi import FastAPI, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -43,6 +45,8 @@ class ChatUpdate(BaseModel):
 
 class MessageCreate(BaseModel):
     message: str
+    research_mode: bool = False
+    research_scope: Literal["auto", "web", "documents", "both"] = "auto"
     force_web: bool = False
     document_ids: list[str] = Field(default_factory=list, max_length=20)
     request_id: str | None = Field(default=None, max_length=100)
@@ -203,7 +207,8 @@ def submit_job(request: Request, chat_id: str, payload: MessageCreate):
     try:
         selection = dict(chat_id=chat_id, message=message, force_web=payload.force_web,
                          document_ids=list(dict.fromkeys(payload.document_ids)),
-                         model=payload.model, reasoning=payload.reasoning)
+                         model=payload.model, reasoning=payload.reasoning,
+                         research_mode=payload.research_mode, research_scope=payload.research_scope)
         existing = job_store.replay_request(payload.request_id, **selection)
         if existing is not None:
             return existing
@@ -303,3 +308,11 @@ def send_message(chat_id: str, payload: MessageCreate, request: Request):
         generation_events(request, 0, job["id"], legacy=True),
         media_type="text/event-stream", headers=stream_headers(),
     )
+
+
+@app.get("/api/research/{run_id}")
+def research_run(run_id: str):
+    result = get_run(run_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Research run not found")
+    return result

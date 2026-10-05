@@ -13,6 +13,10 @@ class Source:
     relevance_score: Optional[float] = None
     document_id: Optional[str] = None
 
+    chunk_id: Optional[str] = None
+    retrieval_score: Optional[float] = None
+    publication_date: Optional[str] = None
+
     def citation(self) -> str:
         if self.source_type == "document":
             if self.page is not None:

@@ -1,4 +1,5 @@
 import time
+import hashlib
 
 import numpy as np
 from backend.core.document_store import get_embedding_model
@@ -32,10 +33,14 @@ def retrieve_web(
     query: str,
     search_results: int = 5,
     candidate_k: int = 20,
-    fresh: bool = False
+    fresh: bool = False,
+    cache=None,
 ) -> list[Source]:
 
     start = time.perf_counter()
+
+    if cache is not None:
+        cache.last_operation = dict(urls=[], fetched=[], failed=[], budget_skipped=[])
 
     results = search_web(
         query,
@@ -52,7 +57,7 @@ def retrieve_web(
     urls = [result["url"] for result in results]
 
     start = time.perf_counter()
-    pages = read_webpages(urls)
+    pages = cache.read(urls) if cache is not None else read_webpages(urls)
     reading_time = time.perf_counter() - start
 
     print(f"[Web reading: {reading_time:.2f}s]")
@@ -70,10 +75,15 @@ def retrieve_web(
     candidates = []
 
     for page in pages:
-        for chunk in chunk_text(page["text"]):
+        chunks = chunk_text(page["text"])
+        if cache is not None:
+            from backend.research.schemas import MAX_PAGE_CHUNKS
+            chunks = chunks[:MAX_PAGE_CHUNKS]
+        for chunk in chunks:
             candidates.append({
                 "text": chunk,
                 "url": page["url"],
+                "publication_date": page.get("publication_date"),
                 "title": title_lookup.get(
                     page["url"],
                     page["url"]
@@ -89,6 +99,10 @@ def retrieve_web(
 
     if not candidates:
         return []
+
+    if cache is not None:
+        cache.chunks_considered += len(candidates)
+        cache.last_operation["chunks_considered"] = len(candidates)
 
     start = time.perf_counter()
 
@@ -129,7 +143,10 @@ def retrieve_web(
                 source_type="web",
                 title=candidate["title"],
                 url=candidate["url"],
-                relevance_score=float(scores[index])
+                relevance_score=float(scores[index]),
+                retrieval_score=float(scores[index]),
+                chunk_id="web:" + hashlib.sha256((candidate["url"] + "\0" + candidate["text"]).encode()).hexdigest(),
+                publication_date=candidate.get("publication_date")
             )
         )
 

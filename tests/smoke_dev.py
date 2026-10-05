@@ -96,9 +96,9 @@ sys.exit(dev.main([]))
                 except queue.Empty:
                     pass
             import urllib.request
-            with urllib.request.urlopen(f"http://127.0.0.1:{backend_port}/api/health") as response:
+            with urllib.request.urlopen(f"http://127.0.0.1:{backend_port}/api/health", timeout=10) as response:
                 assert response.status == 200
-            with urllib.request.urlopen(f"http://127.0.0.1:{frontend_port}/src/App.tsx") as response:
+            with urllib.request.urlopen(f"http://127.0.0.1:{frontend_port}/src/App.tsx", timeout=10) as response:
                 assert response.status == 200
             children = psutil.Process(process.pid).children(recursive=True)
             assert len(children) >= 4, children

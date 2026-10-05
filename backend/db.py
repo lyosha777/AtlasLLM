@@ -96,6 +96,8 @@ def init_db() -> None:
             ON generation_events(job_id, id);
             """
         )
+        from backend.research.store import SCHEMA
+        db.executescript(SCHEMA)
         columns = {row["name"] for row in db.execute("PRAGMA table_info(messages)")}
         if "attachments_json" not in columns:
             db.execute("ALTER TABLE messages ADD COLUMN attachments_json TEXT NOT NULL DEFAULT '[]'")
@@ -264,9 +266,12 @@ def list_messages(chat_id: str) -> list[dict]:
             SELECT messages.*, generation_jobs.id AS generation_id,
                 generation_jobs.status AS generation_status,
                 generation_jobs.last_event_id AS generation_revision,
-                generation_jobs.inference_json AS inference_json
+                generation_jobs.inference_json AS inference_json,
+                generation_jobs.timings_json AS timings_json,
+                research_runs.id AS research_run_id, research_runs.revision AS research_revision
             FROM messages LEFT JOIN generation_jobs
                 ON generation_jobs.assistant_message_id = messages.id
+            LEFT JOIN research_runs ON research_runs.job_id = generation_jobs.id
             WHERE messages.chat_id = ?
             ORDER BY messages.created_at ASC, messages.rowid ASC
             """,
@@ -294,6 +299,10 @@ def serialize_message(row) -> dict:
             "generation_revision": row["generation_revision"] or 0,
             "inference": json.loads(row["inference_json"]) if row["inference_json"] else None,
         })
+    if "research_run_id" in row.keys():
+        message.update(research_run_id=row["research_run_id"], research_revision=row["research_revision"])
+    if "timings_json" in row.keys():
+        message["timings"] = json.loads(row["timings_json"] or "{}")
     return message
 
 

@@ -1,0 +1,16 @@
+{
+  "version": "failures-v1",
+  "cases": [
+    {
+      "id": "historical-comparison-001",
+      "question": "Who existed first, Armenia or Azerbaijan?",
+      "observed_failure": "Atlas retrieved weak/general sources and concluded that the answer could not be determined from the evidence.",
+      "purpose": "Preserve a real retrieval/research regression for future evaluation with retained historical evidence and explicit interpretation of what existed first means.",
+      "status": "needs_curated_evidence",
+      "expected_document_ids": [],
+      "expected_chunk_ids": [],
+      "included_in_core_metrics": false,
+      "notes": "No hardcoded answer, country-specific routing, or live web dependency. Add reviewed source passages before scoring this case."
+    }
+  ]
+}

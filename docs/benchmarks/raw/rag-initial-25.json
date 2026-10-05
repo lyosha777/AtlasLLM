@@ -1,0 +1,1002 @@
+{
+  "version": 1,
+  "kind": "rag_baseline",
+  "status": "completed",
+  "records": [
+    {
+      "case_id": "q01",
+      "question": "What are the three messages in the TCP handshake?",
+      "style": "direct",
+      "expected_chunk_ids": [
+        "network:page:1:chunk:0"
+      ],
+      "expected_document_ids": [
+        "network"
+      ],
+      "retrieved_ids": [
+        "network:page:1:chunk:0",
+        "operations:page:4:chunk:0",
+        "network:page:2:chunk:0",
+        "operations:page:5:chunk:0",
+        "operations:page:1:chunk:0"
+      ],
+      "ranked_ids": [
+        "network:page:1:chunk:0",
+        "operations:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 60.72839999978896,
+      "reranking_ms": 107.55220000282861,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q02",
+      "question": "Which transport sends messages without setting up a connection or promising they arrive?",
+      "style": "paraphrase",
+      "expected_chunk_ids": [
+        "network:page:2:chunk:0"
+      ],
+      "expected_document_ids": [
+        "network"
+      ],
+      "retrieved_ids": [
+        "network:page:2:chunk:0",
+        "network:page:1:chunk:0",
+        "operations:page:4:chunk:0",
+        "operations:page:1:chunk:0",
+        "operations:page:5:chunk:0"
+      ],
+      "ranked_ids": [
+        "network:page:2:chunk:0",
+        "operations:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 38.82059999887133,
+      "reranking_ms": 98.36879999784287,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q03",
+      "question": "Which DNS resource record resolves a hostname to an IPv6 address?",
+      "style": "terminology",
+      "expected_chunk_ids": [
+        "network:page:3:chunk:0"
+      ],
+      "expected_document_ids": [
+        "network"
+      ],
+      "retrieved_ids": [
+        "network:page:3:chunk:0",
+        "retrieval:page:5:chunk:0",
+        "lab:page:4:chunk:0",
+        "operations:page:3:chunk:0",
+        "network:page:1:chunk:0"
+      ],
+      "ranked_ids": [
+        "network:page:3:chunk:0",
+        "retrieval:page:5:chunk:0",
+        "operations:page:3:chunk:0",
+        "lab:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 33.88529999938328,
+      "reranking_ms": 216.6170999989845,
+      "source_ids_checked": 9,
+      "valid_source_ids": 9
+    },
+    {
+      "case_id": "q04",
+      "question": "How does a browser verify that an encrypted peer is the intended website?",
+      "style": "different_wording",
+      "expected_chunk_ids": [
+        "network:page:4:chunk:0"
+      ],
+      "expected_document_ids": [
+        "network"
+      ],
+      "retrieved_ids": [
+        "network:page:4:chunk:0",
+        "retrieval:page:5:chunk:0",
+        "operations:page:5:chunk:0",
+        "operations:page:1:chunk:0",
+        "operations:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "network:page:4:chunk:0",
+        "retrieval:page:5:chunk:0",
+        "operations:page:1:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 54.51030000403989,
+      "reranking_ms": 117.848399997456,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q05",
+      "question": "What header tells a client when to retry after an HTTP 429 response?",
+      "style": "specific_passage",
+      "expected_chunk_ids": [
+        "network:page:5:chunk:0"
+      ],
+      "expected_document_ids": [
+        "network"
+      ],
+      "retrieved_ids": [
+        "network:page:5:chunk:0",
+        "operations:page:4:chunk:0",
+        "operations:page:3:chunk:0",
+        "network:page:2:chunk:0",
+        "operations:page:2:chunk:0"
+      ],
+      "ranked_ids": [
+        "network:page:5:chunk:0",
+        "operations:page:3:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 36.433300003409386,
+      "reranking_ms": 108.91699999774573,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q06",
+      "question": "Does SQLite WAL mode allow multiple simultaneous writers?",
+      "style": "terminology",
+      "expected_chunk_ids": [
+        "storage:page:1:chunk:0"
+      ],
+      "expected_document_ids": [
+        "storage"
+      ],
+      "retrieved_ids": [
+        "storage:page:1:chunk:0",
+        "storage:page:2:chunk:0",
+        "storage:page:4:chunk:0",
+        "retrieval:page:2:chunk:0",
+        "retrieval:page:1:chunk:0"
+      ],
+      "ranked_ids": [
+        "storage:page:1:chunk:0",
+        "retrieval:page:1:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 37.883199998759665,
+      "reranking_ms": 110.70549999567447,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q07",
+      "question": "Which per-connection SQLite setting enables cascading foreign key enforcement?",
+      "style": "specific_passage",
+      "expected_chunk_ids": [
+        "storage:page:2:chunk:0"
+      ],
+      "expected_document_ids": [
+        "storage"
+      ],
+      "retrieved_ids": [
+        "storage:page:2:chunk:0",
+        "storage:page:1:chunk:0",
+        "storage:page:4:chunk:0",
+        "network:page:1:chunk:0",
+        "storage:page:3:chunk:0"
+      ],
+      "ranked_ids": [
+        "storage:page:2:chunk:0",
+        "network:page:1:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 35.226799998781644,
+      "reranking_ms": 102.12850000243634,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q08",
+      "question": "Why might a time-only filter miss the benefit of an index that starts with a customer identifier?",
+      "style": "different_wording",
+      "expected_chunk_ids": [
+        "storage:page:3:chunk:0"
+      ],
+      "expected_document_ids": [
+        "storage"
+      ],
+      "retrieved_ids": [
+        "storage:page:3:chunk:0",
+        "retrieval:page:2:chunk:0",
+        "retrieval:page:4:chunk:0",
+        "retrieval:page:1:chunk:0",
+        "network:page:5:chunk:0"
+      ],
+      "ranked_ids": [
+        "storage:page:3:chunk:0",
+        "network:page:5:chunk:0",
+        "retrieval:page:2:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 38.51659999781987,
+      "reranking_ms": 138.20920000580372,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q09",
+      "question": "How can a money transfer avoid leaving only the debit applied if the credit fails?",
+      "style": "paraphrase",
+      "expected_chunk_ids": [
+        "storage:page:4:chunk:0"
+      ],
+      "expected_document_ids": [
+        "storage"
+      ],
+      "retrieved_ids": [
+        "storage:page:4:chunk:0",
+        "operations:page:2:chunk:0",
+        "network:page:2:chunk:0",
+        "storage:page:5:chunk:0",
+        "storage:page:1:chunk:0"
+      ],
+      "ranked_ids": [
+        "storage:page:4:chunk:0",
+        "network:page:2:chunk:0",
+        "operations:page:2:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 38.03370000241557,
+      "reranking_ms": 107.56379999656929,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q10",
+      "question": "How often does the handbook require testing database restoration?",
+      "style": "direct",
+      "expected_chunk_ids": [
+        "storage:page:5:chunk:0"
+      ],
+      "expected_document_ids": [
+        "storage"
+      ],
+      "retrieved_ids": [
+        "storage:page:5:chunk:0",
+        "storage:page:1:chunk:0",
+        "operations:page:1:chunk:0",
+        "operations:page:3:chunk:0",
+        "lab:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "storage:page:5:chunk:0",
+        "lab:page:4:chunk:0",
+        "operations:page:1:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 33.83790000225417,
+      "reranking_ms": 93.7021999998251,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q11",
+      "question": "How can a search find a passage expressed using different words?",
+      "style": "paraphrase",
+      "expected_chunk_ids": [
+        "retrieval:page:1:chunk:0"
+      ],
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "retrieved_ids": [
+        "retrieval:page:1:chunk:0",
+        "retrieval:page:2:chunk:0",
+        "retrieval:page:5:chunk:0",
+        "lab:page:4:chunk:0",
+        "retrieval:page:3:chunk:0"
+      ],
+      "ranked_ids": [
+        "retrieval:page:1:chunk:0",
+        "lab:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 39.26770000543911,
+      "reranking_ms": 94.8805000007269,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q12",
+      "question": "Can cross-encoder reranking recover a passage missing from first-stage retrieval?",
+      "style": "terminology",
+      "expected_chunk_ids": [
+        "retrieval:page:2:chunk:0"
+      ],
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "retrieved_ids": [
+        "retrieval:page:2:chunk:0",
+        "retrieval:page:1:chunk:0",
+        "retrieval:page:4:chunk:0",
+        "retrieval:page:3:chunk:0",
+        "lab:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "retrieval:page:2:chunk:0",
+        "lab:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 36.09680000226945,
+      "reranking_ms": 115.46939999971073,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q13",
+      "question": "What is Recall@3 when one of two gold passages is returned?",
+      "style": "specific_passage",
+      "expected_chunk_ids": [
+        "retrieval:page:3:chunk:0"
+      ],
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "retrieved_ids": [
+        "retrieval:page:3:chunk:0",
+        "operations:page:3:chunk:0",
+        "storage:page:4:chunk:0",
+        "retrieval:page:5:chunk:0",
+        "operations:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "retrieval:page:3:chunk:0",
+        "operations:page:3:chunk:0",
+        "storage:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 35.944400005973876,
+      "reranking_ms": 112.41210000298452,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q14",
+      "question": "What does a first relevant result at rank three contribute to MRR?",
+      "style": "direct",
+      "expected_chunk_ids": [
+        "retrieval:page:4:chunk:0"
+      ],
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "retrieved_ids": [
+        "retrieval:page:4:chunk:0",
+        "retrieval:page:2:chunk:0",
+        "retrieval:page:3:chunk:0",
+        "operations:page:5:chunk:0",
+        "lab:page:5:chunk:0"
+      ],
+      "ranked_ids": [
+        "retrieval:page:4:chunk:0",
+        "lab:page:5:chunk:0",
+        "operations:page:5:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 34.792800004652236,
+      "reranking_ms": 96.01679999468615,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q15",
+      "question": "What information lets a reader inspect the original snippet behind an answer reference?",
+      "style": "different_wording",
+      "expected_chunk_ids": [
+        "retrieval:page:5:chunk:0"
+      ],
+      "expected_document_ids": [
+        "retrieval"
+      ],
+      "retrieved_ids": [
+        "retrieval:page:5:chunk:0",
+        "retrieval:page:1:chunk:0",
+        "retrieval:page:3:chunk:0",
+        "retrieval:page:2:chunk:0",
+        "lab:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "retrieval:page:5:chunk:0",
+        "lab:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 33.968499999900814,
+      "reranking_ms": 101.14920000341954,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q16",
+      "question": "What distinguishes a readiness probe from a liveness probe during a dependency outage?",
+      "style": "terminology",
+      "expected_chunk_ids": [
+        "operations:page:1:chunk:0"
+      ],
+      "expected_document_ids": [
+        "operations"
+      ],
+      "retrieved_ids": [
+        "operations:page:1:chunk:0",
+        "operations:page:2:chunk:0",
+        "lab:page:2:chunk:0",
+        "lab:page:5:chunk:0",
+        "network:page:2:chunk:0"
+      ],
+      "ranked_ids": [
+        "operations:page:1:chunk:0",
+        "lab:page:5:chunk:0",
+        "network:page:2:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 33.445900000515394,
+      "reranking_ms": 101.66970000136644,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q17",
+      "question": "How should a service exit while allowing ongoing requests time to finish?",
+      "style": "paraphrase",
+      "expected_chunk_ids": [
+        "operations:page:2:chunk:0"
+      ],
+      "expected_document_ids": [
+        "operations"
+      ],
+      "retrieved_ids": [
+        "operations:page:2:chunk:0",
+        "network:page:5:chunk:0",
+        "operations:page:1:chunk:0",
+        "operations:page:3:chunk:0",
+        "operations:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "operations:page:2:chunk:0",
+        "network:page:5:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 42.19209999428131,
+      "reranking_ms": 101.05350000230828,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q18",
+      "question": "How can retrying the same submission avoid launching a second task?",
+      "style": "different_wording",
+      "expected_chunk_ids": [
+        "operations:page:3:chunk:0"
+      ],
+      "expected_document_ids": [
+        "operations"
+      ],
+      "retrieved_ids": [
+        "operations:page:3:chunk:0",
+        "network:page:5:chunk:0",
+        "operations:page:4:chunk:0",
+        "storage:page:4:chunk:0",
+        "storage:page:1:chunk:0"
+      ],
+      "ranked_ids": [
+        "operations:page:3:chunk:0",
+        "network:page:5:chunk:0",
+        "storage:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 35.38200000184588,
+      "reranking_ms": 98.41589999996359,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q19",
+      "question": "How does an SSE subscriber request missed updates after reconnecting?",
+      "style": "specific_passage",
+      "expected_chunk_ids": [
+        "operations:page:4:chunk:0"
+      ],
+      "expected_document_ids": [
+        "operations"
+      ],
+      "retrieved_ids": [
+        "operations:page:4:chunk:0",
+        "network:page:5:chunk:0",
+        "operations:page:1:chunk:0",
+        "storage:page:4:chunk:0",
+        "operations:page:3:chunk:0"
+      ],
+      "ranked_ids": [
+        "operations:page:4:chunk:0",
+        "network:page:5:chunk:0",
+        "storage:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 40.131100002327,
+      "reranking_ms": 102.50779999478254,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q20",
+      "question": "Why report p95 latency instead of only average latency?",
+      "style": "direct",
+      "expected_chunk_ids": [
+        "operations:page:5:chunk:0"
+      ],
+      "expected_document_ids": [
+        "operations"
+      ],
+      "retrieved_ids": [
+        "operations:page:5:chunk:0",
+        "network:page:5:chunk:0",
+        "retrieval:page:4:chunk:0",
+        "network:page:2:chunk:0",
+        "operations:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "operations:page:5:chunk:0",
+        "network:page:5:chunk:0",
+        "retrieval:page:4:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 37.49160000006668,
+      "reranking_ms": 103.58220000489382,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q21",
+      "question": "At what temperature and within how many hours must Kestrel water samples reach the lab?",
+      "style": "specific_passage",
+      "expected_chunk_ids": [
+        "lab:page:1:chunk:0"
+      ],
+      "expected_document_ids": [
+        "lab"
+      ],
+      "retrieved_ids": [
+        "lab:page:1:chunk:0",
+        "lab:page:3:chunk:0",
+        "lab:page:4:chunk:0",
+        "lab:page:2:chunk:0",
+        "lab:page:5:chunk:0"
+      ],
+      "ranked_ids": [
+        "lab:page:1:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 35.906799996155314,
+      "reranking_ms": 106.2482999986969,
+      "source_ids_checked": 6,
+      "valid_source_ids": 6
+    },
+    {
+      "case_id": "q22",
+      "question": "What pH buffers calibrate Cedar and what drift triggers electrode replacement?",
+      "style": "terminology",
+      "expected_chunk_ids": [
+        "lab:page:2:chunk:0"
+      ],
+      "expected_document_ids": [
+        "lab"
+      ],
+      "retrieved_ids": [
+        "lab:page:2:chunk:0",
+        "lab:page:3:chunk:0",
+        "lab:page:1:chunk:0",
+        "operations:page:1:chunk:0",
+        "operations:page:5:chunk:0"
+      ],
+      "ranked_ids": [
+        "lab:page:2:chunk:0",
+        "operations:page:5:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 35.809599998174235,
+      "reranking_ms": 101.69090000272263,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q23",
+      "question": "Which seed tray gets a longer daily illumination period?",
+      "style": "different_wording",
+      "expected_chunk_ids": [
+        "lab:page:3:chunk:0"
+      ],
+      "expected_document_ids": [
+        "lab"
+      ],
+      "retrieved_ids": [
+        "lab:page:3:chunk:0",
+        "lab:page:1:chunk:0",
+        "lab:page:4:chunk:0",
+        "operations:page:5:chunk:0",
+        "storage:page:3:chunk:0"
+      ],
+      "ranked_ids": [
+        "lab:page:3:chunk:0",
+        "operations:page:5:chunk:0",
+        "storage:page:3:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 35.88600000512088,
+      "reranking_ms": 100.08240000024671,
+      "source_ids_checked": 8,
+      "valid_source_ids": 8
+    },
+    {
+      "case_id": "q24",
+      "question": "May tissue that has warmed up be put back into the main frozen collection?",
+      "style": "paraphrase",
+      "expected_chunk_ids": [
+        "lab:page:4:chunk:0"
+      ],
+      "expected_document_ids": [
+        "lab"
+      ],
+      "retrieved_ids": [
+        "lab:page:4:chunk:0",
+        "lab:page:1:chunk:0",
+        "lab:page:3:chunk:0",
+        "storage:page:5:chunk:0",
+        "storage:page:1:chunk:0"
+      ],
+      "ranked_ids": [
+        "lab:page:4:chunk:0",
+        "storage:page:5:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 39.692500002274755,
+      "reranking_ms": 99.88410000369186,
+      "source_ids_checked": 7,
+      "valid_source_ids": 7
+    },
+    {
+      "case_id": "q25",
+      "question": "What does the Harbor study control group receive?",
+      "style": "direct",
+      "expected_chunk_ids": [
+        "lab:page:5:chunk:0"
+      ],
+      "expected_document_ids": [
+        "lab"
+      ],
+      "retrieved_ids": [
+        "lab:page:5:chunk:0",
+        "lab:page:3:chunk:0",
+        "retrieval:page:3:chunk:0",
+        "operations:page:1:chunk:0",
+        "storage:page:4:chunk:0"
+      ],
+      "ranked_ids": [
+        "lab:page:5:chunk:0",
+        "operations:page:1:chunk:0",
+        "storage:page:4:chunk:0",
+        "retrieval:page:3:chunk:0"
+      ],
+      "retrieval": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "reranked": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "mrr": 1.0
+      },
+      "retrieval_ms": 33.535100003064144,
+      "reranking_ms": 96.26190000562929,
+      "source_ids_checked": 9,
+      "valid_source_ids": 9
+    }
+  ],
+  "dataset_version": "rag-v1",
+  "dataset_sha256": "7797dbe08d5a6ee63739076736108fd6aacfab24b3976d04608aa29d3260483f",
+  "planned_cases": 25,
+  "embedding_model": "all-MiniLM-L6-v2",
+  "reranker_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+  "settings": {
+    "retrieval_k": 5,
+    "reranker_k": 6,
+    "diversify": true
+  },
+  "citation_validation": "Retained source/chunk IDs, document IDs, pages and exact passages; no generated-answer citation evaluation.",
+  "setup_seconds": 2.431474500001059,
+  "summary": {
+    "retrieval": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    },
+    "reranked": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    },
+    "retrieval_p50_ms": 36.09680000226945,
+    "reranking_p50_ms": 102.12850000243634,
+    "source_id_validity": 1.0
+  },
+  "total_seconds": 40.171513699999196,
+  "timeout_seconds": 120
+}

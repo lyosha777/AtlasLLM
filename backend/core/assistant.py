@@ -27,7 +27,15 @@ def stream_assistant(
     force_web: bool = False,
     document_ids: list[str] | None = None,
     inference: dict | None = None,
+    research_mode: bool = False,
+    research_scope: str = "auto",
+    research_run_id: str | None = None,
 ) -> Iterator[dict]:
+
+    if research_mode:
+        from backend.research.pipeline import research_events
+        yield from research_events(message, history, inference, research_run_id, research_scope, document_ids, force_web)
+        return
 
     total_start = time.perf_counter()
     timings = {}
