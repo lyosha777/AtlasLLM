@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "full": false,
+  "status": "completed",
+  "runs": [
+    {
+      "model": "qwen3:4b-instruct",
+      "reasoning": "provider_default_unverified",
+      "mode": "chat",
+      "prompt_id": "greeting",
+      "repetition": 1,
+      "status": "completed",
+      "inference": {
+        "provider": "ollama",
+        "model": "qwen3:4b-instruct",
+        "model_digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+        "context_length": 262144,
+        "requested_reasoning": null,
+        "reasoning_mode": "provider_default_unverified",
+        "capability": {
+          "kind": "unverified",
+          "thinking_supported": true,
+          "settings": [],
+          "default": null,
+          "values": [],
+          "verified": false,
+          "explanation": "Ollama has not supplied verified reasoning controls. Model defaults apply.",
+          "provider_default": null
+        },
+        "settings": {},
+        "actual_settings": {
+          "model": "qwen3:4b-instruct",
+          "options": {
+            "temperature": 0.3,
+            "num_predict": 128
+          }
+        },
+        "detected_at": "2026-10-05T00:05:39.915030+00:00"
+      },
+      "planner_ms": 4107.0,
+      "planner_route": {
+        "use_documents": false,
+        "use_web": false,
+        "fresh": false
+      },
+      "ttft_ms": 5100.290499998664,
+      "inference_ttft_ms": 88.61650000471855,
+      "tps": 109.76948408342481,
+      "tpot_ms": 9.110000000000001,
+      "provider_output_tokens": 3,
+      "provider_usage": {
+        "eval_count": 3,
+        "eval_duration": 27330000,
+        "prompt_eval_count": 62,
+        "prompt_eval_duration": 25148000,
+        "load_duration": 1531900,
+        "total_duration": 114931700
+      },
+      "visible_chunks": 2,
+      "true_token_itl_ms": null,
+      "stream_chunk_interval_ms": 14.813000001595356,
+      "e2e_seconds": 5.1013160000002244,
+      "retrieval_ms": null,
+      "reranker_ms": null
+    },
+    {
+      "model": "qwen3:4b-instruct",
+      "reasoning": "provider_default_unverified",
+      "mode": "chat",
+      "prompt_id": "arithmetic",
+      "repetition": 1,
+      "status": "completed",
+      "inference": {
+        "provider": "ollama",
+        "model": "qwen3:4b-instruct",
+        "model_digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+        "context_length": 262144,
+        "requested_reasoning": null,
+        "reasoning_mode": "provider_default_unverified",
+        "capability": {
+          "kind": "unverified",
+          "thinking_supported": true,
+          "settings": [],
+          "default": null,
+          "values": [],
+          "verified": false,
+          "explanation": "Ollama has not supplied verified reasoning controls. Model defaults apply.",
+          "provider_default": null
+        },
+        "settings": {},
+        "actual_settings": {
+          "model": "qwen3:4b-instruct",
+          "options": {
+            "temperature": 0.3,
+            "num_predict": 128
+          }
+        },
+        "detected_at": "2026-10-05T00:05:45.007132+00:00"
+      },
+      "planner_ms": 503.0,
+      "planner_route": {
+        "use_documents": false,
+        "use_web": false,
+        "fresh": false
+      },
+      "ttft_ms": 1411.3552999988315,
+      "inference_ttft_ms": 94.9966999978642,
+      "tps": 95.12032721392562,
+      "tpot_ms": 10.513,
+      "provider_output_tokens": 3,
+      "provider_usage": {
+        "eval_count": 3,
+        "eval_duration": 31539000,
+        "prompt_eval_count": 69,
+        "prompt_eval_duration": 20490000,
+        "load_duration": 10201300,
+        "total_duration": 123969200
+      },
+      "visible_chunks": 2,
+      "true_token_itl_ms": null,
+      "stream_chunk_interval_ms": 15.129999999771826,
+      "e2e_seconds": 1.473049299995182,
+      "retrieval_ms": null,
+      "reranker_ms": null
+    },
+    {
+      "model": "qwen3:4b-instruct",
+      "reasoning": "provider_default_unverified",
+      "mode": "chat",
+      "prompt_id": "rewrite",
+      "repetition": 1,
+      "status": "completed",
+      "inference": {
+        "provider": "ollama",
+        "model": "qwen3:4b-instruct",
+        "model_digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+        "context_length": 262144,
+        "requested_reasoning": null,
+        "reasoning_mode": "provider_default_unverified",
+        "capability": {
+          "kind": "unverified",
+          "thinking_supported": true,
+          "settings": [],
+          "default": null,
+          "values": [],
+          "verified": false,
+          "explanation": "Ollama has not supplied verified reasoning controls. Model defaults apply.",
+          "provider_default": null
+        },
+        "settings": {},
+        "actual_settings": {
+          "model": "qwen3:4b-instruct",
+          "options": {
+            "temperature": 0.3,
+            "num_predict": 128
+          }
+        },
+        "detected_at": "2026-10-05T00:05:46.512584+00:00"
+      },
+      "planner_ms": 485.0,
+      "planner_route": {
+        "use_documents": false,
+        "use_web": false,
+        "fresh": false
+      },
+      "ttft_ms": 1394.1237000035471,
+      "inference_ttft_ms": 86.81130000331905,
+      "tps": 80.4345943002809,
+      "tpot_ms": 12.432461538461537,
+      "provider_output_tokens": 13,
+      "provider_usage": {
+        "eval_count": 13,
+        "eval_duration": 161622000,
+        "prompt_eval_count": 70,
+        "prompt_eval_duration": 20054000,
+        "load_duration": 7327300,
+        "total_duration": 247048800
+      },
+      "visible_chunks": 12,
+      "true_token_itl_ms": null,
+      "stream_chunk_interval_ms": 13.502763636510778,
+      "e2e_seconds": 1.5785670000041137,
+      "retrieval_ms": null,
+      "reranker_ms": null
+    }
+  ],
+  "summary": {
+    "ttft_ms": {
+      "count": 3,
+      "mean": 2635.2565000003474,
+      "median": 1411.3552999988315,
+      "p95": 5100.290499998664,
+      "variance": 4557368.697870375
+    },
+    "inference_ttft_ms": {
+      "count": 3,
+      "mean": 90.14150000196726,
+      "median": 88.61650000471855,
+      "p95": 94.9966999978642,
+      "variance": 18.494412011381378
+    },
+    "tps": {
+      "count": 3,
+      "mean": 95.10813519921045,
+      "median": 95.12032721392562,
+      "p95": 109.76948408342481,
+      "variance": 215.13405113121732
+    },
+    "tpot_ms": {
+      "count": 3,
+      "mean": 10.685153846153845,
+      "median": 10.513,
+      "p95": 12.432461538461537,
+      "variance": 2.78191537869822
+    },
+    "e2e_seconds": {
+      "count": 3,
+      "mean": 2.71764409999984,
+      "median": 1.5785670000041137,
+      "p95": 5.1013160000002244,
+      "variance": 4.264202291392375
+    },
+    "planner_ms": {
+      "count": 3,
+      "mean": 1698.3333333333333,
+      "median": 503.0,
+      "p95": 4107.0,
+      "variance": 4351337.333333333
+    },
+    "retrieval_ms": null,
+    "reranker_ms": null
+  },
+  "groups": {
+    "qwen3:4b-instruct / provider_default_unverified / chat": {
+      "ttft_ms": {
+        "count": 3,
+        "mean": 2635.2565000003474,
+        "median": 1411.3552999988315,
+        "p95": 5100.290499998664,
+        "variance": 4557368.697870375
+      },
+      "inference_ttft_ms": {
+        "count": 3,
+        "mean": 90.14150000196726,
+        "median": 88.61650000471855,
+        "p95": 94.9966999978642,
+        "variance": 18.494412011381378
+      },
+      "tps": {
+        "count": 3,
+        "mean": 95.10813519921045,
+        "median": 95.12032721392562,
+        "p95": 109.76948408342481,
+        "variance": 215.13405113121732
+      },
+      "tpot_ms": {
+        "count": 3,
+        "mean": 10.685153846153845,
+        "median": 10.513,
+        "p95": 12.432461538461537,
+        "variance": 2.78191537869822
+      },
+      "e2e_seconds": {
+        "count": 3,
+        "mean": 2.71764409999984,
+        "median": 1.5785670000041137,
+        "p95": 5.1013160000002244,
+        "variance": 4.264202291392375
+      },
+      "planner_ms": {
+        "count": 3,
+        "mean": 1698.3333333333333,
+        "median": 503.0,
+        "p95": 4107.0,
+        "variance": 4351337.333333333
+      },
+      "retrieval_ms": null,
+      "reranker_ms": null
+    }
+  },
+  "planned_runs": 3,
+  "settings": {
+    "output_tokens": 128,
+    "timeout_seconds": 120,
+    "per_run_seconds": 25,
+    "repeats": 1,
+    "web": false,
+    "deep_research": false,
+    "pdf": false
+  },
+  "created_at": "2026-10-05T00:05:31.801320+00:00",
+  "total_seconds": 16.777309299999615
+}
