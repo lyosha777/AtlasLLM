@@ -1,0 +1,21 @@
+# Direct backend runtime dependencies; versions match the existing development manifest.
+# API, validation, ASGI serving, and multipart document uploads
+fastapi==0.142.2
+pydantic==2.13.5
+uvicorn==0.54.0
+python-multipart==0.0.32
+
+# Local model provider and HTTP transport
+ollama==0.6.3
+httpx==0.28.1
+
+# Vector storage, embeddings, reranking, and semantic web retrieval
+chromadb==1.5.9
+sentence-transformers==6.1.0
+numpy==2.2.4
+
+# PDF ingestion and live web/research extraction
+pypdf==6.19.0
+ddgs==9.16.0
+trafilatura==2.3.0
+lxml==6.1.3

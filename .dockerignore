@@ -1,0 +1,35 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Git / IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Atlas runtime data
+data/atlas.db
+data/chroma/
+data/documents/
+data/benchmarks/
+
+# Models / caches
+*.bin
+*.safetensors
+.cache/
+
+# Misc
+.DS_Store
+Thumbs.db

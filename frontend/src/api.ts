@@ -79,7 +79,7 @@ export type StreamEvent =
       settings: NonNullable<InferenceMetadata["actual_settings"]>;
     };
 
-const API = "http://localhost:8000/api";
+const API = import.meta.env.VITE_API_URL ?? "/api";
 
 export type ReasoningCapability = {
   kind: "none" | "fixed" | "binary" | "effort" | "unverified";
